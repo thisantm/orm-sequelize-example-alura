@@ -1,11 +1,21 @@
 const database = require('../models');
+const sequelize = require('sequelize');
+const Op = sequelize.Op;
 
 class TurmaController {
 
+    // consultores
     static async pegaTodasAsTurmas(req, res) {
       try {
-        const todasAsTurmas = await database.Turmas.findAll()
-        return res.status(200).json(todasAsTurmas)
+        const {data_inicial, data_final} = req.query
+        
+        const where = {};
+        data_inicial || data_final ? where.data_inicio = {} : null;
+        data_inicial ? where.data_inicio[Op.gte] = data_inicial : null;
+        data_final ? where.data_inicio[Op.lte] = data_final : null;
+
+        const todasAsTurmas = await database.Turmas.findAll({where})
+        return res.status(200).json(todasAsTurmas);
       } catch (error) {
         return res.status(500).json(error.message);
       }
@@ -24,6 +34,7 @@ class TurmaController {
         }
     }
 
+    // criadores
     static async criaTurma(req,res){
         const novaTurma = req.body;
         try{
@@ -34,6 +45,7 @@ class TurmaController {
         }
     }
 
+    // atualizadores
     static async atualizaTurma(req,res){
         const {id} = req.params;
         const novasInfos = req.body;
@@ -53,6 +65,7 @@ class TurmaController {
         }
     }
 
+    // deletadores
     static async apagaTurma(req,res){
         const {id} = req.params;
         try{
@@ -61,6 +74,20 @@ class TurmaController {
                     {id : Number(id)}
                 });
             return res.status(200).json({message : `id ${id} foi deletado com sucesso`});
+        }catch(error){
+            return res.status(500).json(error.message);
+        }
+    }
+
+    // restauradores
+    static async restauraTurma(req,res){
+        const {id} = req.params;
+        try{
+            await database.Turmas.restore(
+                {where : 
+                    {id : Number(id)}
+                });
+            return res.status(200).json({message : `id ${id} foi restaurado com sucesso`});
         }catch(error){
             return res.status(500).json(error.message);
         }
