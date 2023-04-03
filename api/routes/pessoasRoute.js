@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const PessoaController = require('../controllers/PessoasController.js');
+const MatriculasController = require('../controllers/MatriculasController.js');
 
 const router = Router();
 
@@ -19,16 +20,16 @@ router.delete('/pessoas/:id', PessoaController.apagaPessoa);
 
 // matriculas
 // get
-router.get('/pessoas/:estudanteId/matricula', PessoaController.pegaMatriculasAtivas);
-router.get('/pessoas/:estudanteId/matricula/:matriculaId', PessoaController.pegaUmaMatricula);
-router.get('/pessoas/matricula/:turmaId/confirmadas', PessoaController.pegaMatriculasPorTurma);
-router.get('/pessoas/matricula/lotada', PessoaController.pegaTurmasLotadas);
+router.get('/pessoas/:estudanteId/matricula', MatriculasController.pegaMatriculasAtivas);
+router.get('/pessoas/:estudanteId/matricula/:matriculaId', MatriculasController.pegaUmaMatricula);
+router.get('/pessoas/matricula/:turmaId/confirmadas', MatriculasController.pegaMatriculasPorTurma);
+router.get('/pessoas/matricula/lotada', MatriculasController.pegaTurmasLotadas);
 //post
-router.post('/pessoas/:estudanteId/matricula', PessoaController.criaMatricula);
-router.post('/pessoas/:estudanteId/matricula/:matriculaId/restaura', PessoaController.restauraMatricula);
+router.post('/pessoas/:estudanteId/matricula', MatriculasController.criaMatricula);
+router.post('/pessoas/:estudanteId/matricula/:matriculaId/restaura', MatriculasController.restauraMatricula);
 //put
-router.put('/pessoas/:estudanteId/matricula/:matriculaId', PessoaController.atualizaMatricula);
+router.put('/pessoas/:estudanteId/matricula/:matriculaId', MatriculasController.atualizaMatricula);
 //delete
-router.delete('/pessoas/:estudanteId/matricula/:matriculaId', PessoaController.apagaMatricula);
+router.delete('/pessoas/:estudanteId/matricula/:matriculaId', MatriculasController.apagaMatricula);
 
 module.exports = router;
